@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mastermind{% endblock %}
+
+{% block body %}
+
+<div>
+    <h1>Mastermind</h1>
+    <table>
+        <tr>
+            <th>Numéro</th>
+            <th>Proposition</th>
+            <th>Bien placé(s)</th>
+            <th>Mal placé(s)</th>
+        </tr>
+        {% if mastermind.getEssais() > 0 %}
+            {% for try in mastermind.essais %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ try.code }}</td>
+                <td>{{ try.bien }}</td>
+                <td>{{ try.mal }}</td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+
+        <tr>
+            <td>{{ mastermind.getEssais() + 1 }}</td>
+            {% if not mastermind.isFini %}
+                <form>
+                    <td><input type="number" name="code" value="1234" min="0" max="9999"/></td>
+                    <td><input type="submit" /></td>
+                </form>
+            {% else %}
+                <td><form method="POST"><input type="submit" value="Nouveau jeu"/></form></td>
+                <td>Gagné</td>
+            {% endif %}
+        </tr>
+
+    </table>
+</div>
+{% endblock %}
