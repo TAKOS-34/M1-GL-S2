@@ -25,7 +25,7 @@ class Tournois
 
     #[ORM\ManyToOne(inversedBy: 'tournois_list')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?evenement $ev = null;
+    private ?Evenement $ev = null;
 
     public function getId(): ?int
     {
@@ -68,15 +68,26 @@ class Tournois
         return $this;
     }
 
-    public function getEv(): ?evenement
+    public function getEv(): ?Evenement
     {
         return $this->ev;
     }
 
-    public function setEv(?evenement $ev): static
+    public function setEv(?Evenement $ev): static
     {
         $this->ev = $ev;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "ID: %d - Nom: %s - Date debut: %s - Date fin: %s",
+            $this->getId(),
+            $this->getNom(),
+            $this->getDateDeb()->format('d/m/Y'),
+            $this->getDateFin()->format('d/m/Y')
+        );
     }
 }

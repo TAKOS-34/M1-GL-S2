@@ -90,4 +90,14 @@ class Evenement
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "ID: %d - Nom: %s - Description: %s",
+            $this->getId(),
+            $this->getNom(),
+            $this->getDescription()
+        );
+    }
 }
