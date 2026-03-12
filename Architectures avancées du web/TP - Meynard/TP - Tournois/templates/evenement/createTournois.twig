@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Création d'un tournois{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouvel tournois</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    <a href="{{ path('getEvt') }}">Retour à la liste</a>
+{% endblock %}

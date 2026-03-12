@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Evenement;
 use App\Entity\Tournois;
+use App\Form\EvenementType;
+use App\Form\TournoisType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 final class MainController extends AbstractController
@@ -113,5 +116,39 @@ final class MainController extends AbstractController
     public function showTournois(Tournois $tournois): Response {
         echo($tournois);
         return new Response();
+    }
+
+    #[Route("/evt/add/form", name: "formEvt")]
+    public function formEvt(Request $request, EntityManagerInterface $entityManager): Response {
+        $evt = new Evenement();
+        $form = $this->createForm(EvenementType::class, $evt, []);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($evt);
+            $entityManager->flush();
+            return $this->redirectToRoute('getEvt');
+        }
+
+        return $this->render('evenement/createEvenement.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route("/tournois/add/form", name: "formTournois")]
+    public function formTournois(Request $request, EntityManagerInterface $entityManager): Response {
+        $evt = new Tournois();
+        $form = $this->createForm(TournoisType::class, $evt, []);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($evt);
+            $entityManager->flush();
+            return $this->redirectToRoute('getEvt');
+        }
+
+        return $this->render('evenement/createEvenement.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

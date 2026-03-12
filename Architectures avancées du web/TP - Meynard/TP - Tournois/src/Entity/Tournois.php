@@ -15,17 +15,24 @@ class Tournois
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
-    private ?string $nom = null;
+    #[Assert\NotBlank]
+    private string $nom;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $dateDeb = null;
+    #[Assert\NotBlank]
+    #[Assert\DateTime]
+    private \DateTime $dateDeb;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $dateFin = null;
+    #[Assert\NotBlank]
+    #[Assert\DateTime]
+    private \DateTime $dateFin;
 
     #[ORM\ManyToOne(inversedBy: 'tournois_list')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Evenement $ev = null;
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 4)]
+    private Evenement $ev;
 
     public function getId(): ?int
     {
