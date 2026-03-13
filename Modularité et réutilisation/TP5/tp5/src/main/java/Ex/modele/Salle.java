@@ -4,11 +4,20 @@ import jakarta.persistence.*;
 @Entity
 public class Salle {
     @Id
+    @Column(name = "numS", length = 16)
     private String numSalle;
 
+    @Column(name = "capacite")
     private int capacite;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "typeS", length = 12)
     private TypeSalle typeS;
+
+    @Column(name = "acces", length = 3)
     private String accessibilite;
+
+    @Column(name = "etage", length = 3)
     private String etage;
 
     @ManyToOne
@@ -50,8 +59,27 @@ public class Salle {
         return batiment;
     }
 
-    @Override
-    public String toString() {
-        return "";
+    public void setNumSalle(String numSalle) {
+        this.numSalle = numSalle;
+    }
+
+    public void setCapacite(int capacite) {
+        this.capacite = capacite;
+    }
+
+    public void setTypeS(TypeSalle typeS) {
+        this.typeS = typeS;
+    }
+
+    public void setAccessibilite(String accessibilite) {
+        this.accessibilite = accessibilite;
+    }
+
+    public void setEtage(String etage) {
+        this.etage = etage;
+    }
+
+    public void setBatiment(Batiment batiment) {
+        this.batiment = batiment;
     }
 }
