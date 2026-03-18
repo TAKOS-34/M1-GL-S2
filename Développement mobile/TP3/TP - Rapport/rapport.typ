@@ -48,7 +48,7 @@ Ce rapport a été écrit en #link("https://typst.app/")[*Typst*]. Les schémas 
 Le code de cet exercice correspond à la branche git : `exercice1`.
 
 #figure(
-    "",
+    image("images/app1.png"),
     caption: "Architecture globale de l'application 1"
 )
 
@@ -70,7 +70,7 @@ Une fois dans la deuxième activité, on récupère les informations saisies par
 Le code de cet exercice correspond à la branche git : `exercice2`.
 
 #figure(
-    "",
+    image("images/app2.png"),
     caption: "Architecture globale de l'application 2"
 )
 
@@ -90,7 +90,6 @@ La sécurité pourrait être renforcée, il est impossible depuis l'application 
 \ \
 Afin de renforcer un minimum la sécurité, j'ai ajouté le chiffrement de mot de passe à l'aide de `bcrypt`, la bibliothèque standard pour le chiffrement synchrone d'informations. Dans la classe `BcryptUtils` se trouvent deux méthodes, une permettant de chiffrer le mot de passe (pour l'inscription) et une permettant de comparer un mot de passe avec celui de la base de données (pour la connexion). Le chiffrement est synchrone, ce qui veut dire que même si un utilisateur lit la base de données, il ne pourra pas déchiffrer le mot de passe des utilisateurs, il sera obligé de tester toutes les combinaisons.
 
-#pagebreak()
 = Conclusion
 
 Ce TP renforce encore notre connaissance d'Android, avec l'intégration de base de données. Très utile pour des applications pouvant fonctionner hors ligne, les performances avec la mise en cache ou même le stockage de données permanentes de manière structurée grâce à SQL.
