@@ -2,36 +2,51 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
 use App\Repository\TournoisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TournoisRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection()
+    ],
+    normalizationContext: ['groups' => ['tournois:read']],
+    denormalizationContext: ['groups' => ['tournois:write']]
+)]
 class Tournois
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['tournois:read', 'evenement:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank]
+    #[Groups(['tournois:read', 'tournois:write', 'evenement:read'])]
     private string $nom;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank]
     #[Assert\DateTime]
+    #[Groups(['tournois:read', 'tournois:write', 'evenement:read'])]
     private \DateTime $dateDeb;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank]
     #[Assert\DateTime]
+    #[Groups(['tournois:read', 'tournois:write', 'evenement:read'])]
     private \DateTime $dateFin;
 
     #[ORM\ManyToOne(inversedBy: 'tournois_list')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 4)]
+    #[Groups(['tournois:read', 'tournois:write'])]
     private Evenement $ev;
 
     public function getId(): ?int

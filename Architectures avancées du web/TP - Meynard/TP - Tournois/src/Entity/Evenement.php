@@ -6,28 +6,42 @@ use App\Repository\EvenementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: EvenementRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection()
+    ],
+    normalizationContext: ['groups' => ['evenement:read']],
+    denormalizationContext: ['groups' => ['evenement:write']]
+)]
 class Evenement
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['evenement:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank]
     #[Assert\Length(min: 4)]
+    #[Groups(['evenement:read', 'evenement:write', 'tournois:read'])]
     private string $nom;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['evenement:read', 'evenement:write'])]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Tournois>
      */
     #[ORM\OneToMany(targetEntity: Tournois::class, mappedBy: 'ev', orphanRemoval: true)]
+    #[Groups(['evenement:read'])]
     private Collection $tournois_list;
 
     public function __construct()
@@ -96,11 +110,6 @@ class Evenement
 
     public function __toString(): string
     {
-        return sprintf(
-            "ID: %d - Nom: %s - Description: %s",
-            $this->getId(),
-            $this->getNom(),
-            $this->getDescription()
-        );
+        return $this->getNom();
     }
 }

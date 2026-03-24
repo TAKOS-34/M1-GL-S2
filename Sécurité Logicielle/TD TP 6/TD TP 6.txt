@@ -1,0 +1,21 @@
+1.
+
+(a) if x ≥ 0 then y := x else y := -x dans E0 = (x,2), (y,O)
+<if x ≥ 0 then y := x else y := -x | E0> → (V+ zl + if)
+<if 2 ≥ 0 then y := x else y := -x | E0> → (≥Z,B, true + if)
+<if true then y := x else y := -x | E0> → (iftrue)
+<y := x | E0> → (V + :=)
+<y := 2 | E0> → (:=Z)
+<skip | E0 - (y,2)> = <skip | (x,2), (y,2)>
+
+(b) if x ≥ 0 then y := x else y := -x dans E0 = (x, -2), (y,0)
+<if x ≥ 0 then y := x else y:= -x | E0> →
+<if -2 ≥ 0 then y := x else y:= -x | E0> →
+<if false then y := x else y:= -x | E0> →
+<y := -x | E0> →
+<y := --2 | E0> → Problème, il n'y à pas de règle pour simplifier le "--"
+
+<e | E> → <e' | E>
+---------------------- -un
+<-e | E> → <-e | E>
+
