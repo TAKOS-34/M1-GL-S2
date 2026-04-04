@@ -68,7 +68,7 @@ Inductive eval (env : context) : expr -> value -> Prop :=
     eval env e1 Err -> eval env (Div e1 e2) Err
 | EDivErrR : forall (e1 e2 : expr) (v1 : Z),
     eval env e1 (Val v1) -> eval env e2 Err -> eval env (Div e1 e2) Err
-| EDiv0 : forall (e1 e2 : expr) (v1 : Z),
+| EDivZero : forall (e1 e2 : expr) (v1 : Z),
     eval env e1 (Val v1) -> eval env e2 (Val 0) -> eval env (Div e1 e2) Err.
 
 Definition env1 (n: nat) : (option Z) :=
@@ -115,7 +115,7 @@ Ltac apply_eval_err :=
         || (eapply EMultErrR; [ apply_eval_val | apply_eval_err ])
 
     | |- eval _ (Div _ _) Err => 
-        (apply EDiv0; [ apply_eval_val | apply_eval_val | reflexivity ])
+        (apply EDivZero; [ apply_eval_val | apply_eval_val | reflexivity ])
         || (apply EDivErrL; apply_eval_err)
         || (eapply EDivErrR; [ apply_eval_val | apply_eval_err ])
     end.
@@ -162,10 +162,170 @@ match e with
     end
 end.
 
+Require Import FunInd.
+Functional Scheme f_eval_ind := Induction for f_eval Sort Prop.
+Lemma f_eval_sound : forall (env : context) (e : expr) (v : value), (f_eval env e) = v -> eval env e v.
+do 2 intro; functional induction (f_eval env e) using f_eval_ind; intros.
+-rewrite <-H .
+apply ECte.
+-rewrite <-H.
+apply EVar.
+apply e1.
+-rewrite <- H.
+apply EVarErr.
+apply e1.
+-rewrite <- H.
+apply (EPlus _ _ _ v1 v2).
+apply IHv.
+apply e3.
+apply IHv0.
+apply e4.
+reflexivity.
+-rewrite <-H.
+apply EPlusErrR with (v1 := v1).
+auto.
+auto.
+- rewrite <- H.
+apply EPlusErrL.
+auto.
+-rewrite <- H.
+apply (EMoins _ _ _ v1 v2).
+apply IHv.
+apply e3.
+apply IHv0.
+apply e4.
+reflexivity.
+-rewrite <-H.
+apply EMoinsErrR with (v1 := v1).
+auto.
+auto.
+- rewrite <- H.
+apply EMoinsErrL.
+auto.
+-rewrite <- H.
+apply (EMult _ _ _ v1 v2).
+apply IHv.
+apply e3.
+apply IHv0.
+apply e4.
+reflexivity.
+-rewrite <-H.
+apply EMultErrR with (v1 := v1).
+auto.
+auto.
+- rewrite <- H.
+apply EMultErrL.
+auto.
+- rewrite <- H.
+apply (EDivZero _ _ _ v1).
+auto.
+auto.
+-rewrite <- H.
+eapply EDiv.
+apply IHv.
+apply e3.
+apply IHv0.
+apply e4.
+discriminate.
+reflexivity.
+
+-rewrite <- H.
+eapply EDiv.
+apply IHv. exact e3.
+apply IHv0. exact e4.
+discriminate.
+reflexivity.
+-rewrite <- H.
+apply EDivErrR with (v1 := v1).
+apply IHv. exact e3.
+apply IHv0. exact e4.
+-rewrite <- H.
+apply EDivErrL.
+apply IHv.
+exact e3.
+Qed.
 
 
 
-
+Theorem f_eval_complete : forall (env : context) (e : expr) (v: value), eval env e v -> (f_eval env e) = v.
+Proof.
+intros.
+elim H.
+-intros.
+auto.
+-intros.
+simpl.
+rewrite H0.
+auto.
+-intros.
+simpl.
+rewrite H0.
+auto.
+-intros.
+simpl.
+rewrite H1.
+rewrite H3.
+rewrite H4.
+auto.
+-intros.
+simpl.
+rewrite H1.
+auto.
+-intros.
+simpl.
+rewrite H1.
+rewrite H3.
+auto.
+- intros.
+simpl.
+rewrite H1.
+rewrite H3.
+rewrite H4.
+auto.
+- intros.
+simpl.
+rewrite H1.
+auto.
+- intros.
+simpl.
+rewrite H1.
+rewrite H3.
+auto.
+- intros.
+simpl.
+rewrite H1.
+rewrite H3.
+rewrite H4.
+auto.
+- intros.
+simpl.
+rewrite H1.
+auto.
+- intros.
+simpl.
+rewrite H1.
+rewrite H3.
+auto.
+- intros.
+simpl.
+rewrite H1.
+rewrite H3.
+rewrite H5.
+destruct v2; try reflexivity; destruct H4; reflexivity.
+- intros.
+simpl.
+rewrite H1.
+reflexivity.
+- intros e1' e2' v1' He1 Hf1 He2 Hf2.
+simpl.
+rewrite Hf1.
+rewrite Hf2.
+reflexivity.
+- intros e1' e2' v1' He1 Hf1 He2 Hf2.
+simpl.
+rewrite Hf1.
+rewrite Hf2.
+reflexivity.
 
 
 
