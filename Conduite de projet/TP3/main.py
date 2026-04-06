@@ -15,11 +15,12 @@ class Oracle:
 class DialogueManager:
     def __init__(self):
         self.messages = {
-            "continue": "Je comprends, continuons.",
+            "continue": "Je comprends, continuons",
             "ask_clarification": "Pouvez-vous m'en dire plus ?",
-            "slow_down": "Prenons un instant pour réfléchir.",
-            "offer_support": "Je suis là pour vous soutenir.",
-            "de_escalate": "Restons calme et analysons la situation."
+            "slow_down": "Prenons un instant pour réfléchir",
+            "offer_support": "Je suis là pour vous soutenir",
+            "de_escalate": "Restons calme et analysons la situation",
+            "suggest_pause": "Vous devriez prendre une pause"
         }
 
     def get_reply(self, analysis: dict) -> dict:
