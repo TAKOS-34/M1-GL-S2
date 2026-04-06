@@ -1,16 +1,17 @@
-import random
 import json
+from model import process_json_request
 
 class Oracle:
     def __init__(self):
-        self.emotions = ["joy", "sadness", "anger", "fear", "disgust", "surprise"]
-        self.confidences = ["low", "medium", "high"]
+        pass
 
-    def detect(self, text: str) -> dict:
-        return {
-            "emotion": random.choice(self.emotions),
-            "confidence": random.choice(self.confidences)
-        }
+    def detect(self, text: str, current_action: str) -> dict:
+        payload = json.dumps({
+            "user_text": text, 
+            "current_system_action": current_action
+        })
+
+        return json.loads(process_json_request(payload))
 
 class DialogueManager:
     def __init__(self):
@@ -23,24 +24,27 @@ class DialogueManager:
         }
 
     def get_reply(self, analysis: dict) -> dict:
-        action = random.choice(list(self.messages.keys()))
+        action = analysis["next_system_action"]
 
         return {
             "action": action,
-            "message": self.messages[action],
-            "detected_emotion": analysis["emotion"],
-            "confidence": analysis["confidence"]
+            "message": self.messages.get(action, "Pouvez-vous m'en dire plus ?"),
+            "detected_emotion": analysis["mapped_vad_state"],
+            "vad_scores": analysis["vad_scores"]
         }
 
 class Chatbot:
     def __init__(self):
         self.oracle = Oracle()
         self.dialogue = DialogueManager()
+        self.current_action = "ask_clarification"
 
     def process(self, user_input: str):
-        analysis = self.oracle.detect(user_input)
+        analysis = self.oracle.detect(user_input, self.current_action)
 
         response = self.dialogue.get_reply(analysis)
+
+        self.current_action = response["action"]
 
         return response
 
