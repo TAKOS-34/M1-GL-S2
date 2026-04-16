@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>&eacute;dition du Campus</title>
+</head>
+<body>
+    <h1>Campus</h1>
+
+    <p><strong>Nom :</strong> <span th:text="${campus.nomC}">Nom</span></p>
+	
+	<h3>Modifier le Campus</h3>
+				<form th:action="@{/campus/update}" th:object="${campus}" method="post">
+				<input type="hidden" th:field="*{nomC}" />
+				    <div>
+				        <label for="ville">Ville du Campus :</label>
+				        <input type="text" th:field="*{ville}">
+				    </div>
+				    <button type="submit">Modifier</button>
+				</form>
+	
+	<a th:href="@{/campus/listeCampus}" >Retour à la Liste des Campus</a>
+	<a th:href="@{/}">Retour à l'Accueil</a>
+</body>
+</html>

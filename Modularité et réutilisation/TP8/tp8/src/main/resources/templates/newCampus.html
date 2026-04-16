@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ajouter un Campus</title>
+</head>
+<body>
+<h1>Ajouter un Nouveau Campus</h1>
+<form th:action="@{/campus/processNewCampus}" th:object="${campus}" method="post">
+    <label>Nom :</label>
+    <input type="text" th:field="*{nomC}" required />
+    <br/>
+    <label>Ville :</label>
+    <input type="text" th:field="*{ville}" required />
+    <br/>
+    <button type="submit">Ajouter</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Campus</title>
+</head>
+<body>
+
+<h2>Détails du campus</h2>
+<!-- ${campus.nomC} : appelle le getter getNomC() de Campus -->
+<p>Nom : <span th:text="${campus.nomC}"></span></p>
+<p>Localisation : <span th:text="${campus.ville}"></span></p>
+<p> Batiments :
+<p th:each="b:${campus.getBatiments()}" th:text="${b.getCodeB()}"></p></p>
+<a th:href="@{/}">Retour à l'Accueil</a>
+
+</body>
+</html>

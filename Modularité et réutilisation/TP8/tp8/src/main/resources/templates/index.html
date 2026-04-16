@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+	<title>Universit&eacute; de Montpellier</title>
+</head>
+<body>
+	<h1> Une vieille Universit&eacute; en Europe </h1>
+	<p><img width="100px" th:src="@{images/UM_Logo.png}"/> </p> 
+	
+	<div>
+        <p>Choisissez une page &agrave; consulter :</p>	
+	 <a th:href="@{/campuses}">Voir les Campus en JSON </a><br>
+	 <a th:href="@{/campus/listeCampus}">Voir les Campus</a>
+	</div>
+</body>
+</html>

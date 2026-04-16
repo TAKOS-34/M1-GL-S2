@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Campus</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+
+<h2>Les attributs du campus</h2>
+<div>
+    <p>
+        <strong>Nom :</strong>
+        <span th:text="${campus.nomC}">Nom du campus</span>
+    </p>
+    <p>
+        <strong>Ville :</strong>
+        <span th:text="${campus.ville}">Ville</span>
+    </p>
+</div>
+<br/>
+<div>
+    <a th:href="@{/campus/listeCampus}">Retour à la liste</a>
+</div>
+</body>
+</html>
