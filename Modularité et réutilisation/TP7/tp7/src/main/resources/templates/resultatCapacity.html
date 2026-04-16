@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nombre de salles</title>
+</head>
+<body>
+
+<h2>Résultat</h2>
+
+<p>Campus : <span th:text="${nomCampus}"></span></p>
+<p>Nombre de salles : <span th:text="${nbSalles}"></span></p>
+<p>Nombre de bâtiments : <span th:text="${nbBatiments}"></span></p>
+
+<a th:href="@{/campus/form}">Retour</a>
+
+</body>
+</html>

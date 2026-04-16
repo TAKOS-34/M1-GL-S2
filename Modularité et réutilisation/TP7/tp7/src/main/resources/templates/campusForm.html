@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recherche du Campus</title>
+</head>
+<body>
+
+<h2>Veuillez saisir le nom du campus</h2>
+
+<form th:action="@{/campus/resultatCapacite}" method="post">
+    <label>Nom du campus :</label>
+    <input type="text" name="nomCampus"/>
+    <button type="submit">Valider</button>
+</form>
+
+</body>
+</html>

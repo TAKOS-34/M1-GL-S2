@@ -1,6 +1,13 @@
 <h1>Liste des produits</h1>
 <ul>
-  @for (p of products(); track p.name) {
-    <li>{{ p.nom }}</li>
+  @for (p of products(); track p.nom) {
+    <li>
+      {{ p.nom }} | {{ p.marque }} | {{ p.prix }} EUR |
+      <span>Quantite : </span>
+      <span id="quantity">{{ getQuantity(p.nom) }}</span>
+      <button type="button" (click)="increment(p.nom)">+</button>
+      <button type="button" (click)="decrement(p.nom)">-</button>
+      <button type="button" style="margin-left: 4px" (click)="addProductToCart(p)">Ajouter au panier</button>
+    </li>
   }
 </ul>

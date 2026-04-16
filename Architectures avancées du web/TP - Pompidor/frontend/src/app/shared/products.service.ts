@@ -11,4 +11,15 @@ export class ProductsService {
   getProducts(): Observable<any[]> {
     return this.http.get<any[]>('/api/articles');
   }
+
+  addToCart(product: any, quantity: number): Observable<any> {
+    return this.http.post<any>('/api/cart/add', {
+      nom: product.nom,
+      quantity
+    });
+  }
+
+  getCart(): Observable<any[]> {
+    return this.http.get<any[]>('/api/cart');
+  }
 }

@@ -27,11 +27,65 @@ app.use(
 );
 
 app.get('/api/homepage', async (_, res) => {
-    res.json(await db.collection('rayons').distinct('rayon'));
+    return res.json((await db.collection('rayons').find().toArray()));
 });
 
 app.get('/api/articles', async (_, res) => {
-    res.json(await db.collection('articles').find().toArray());
+    return res.json(await db.collection('articles').find().toArray());
+});
+
+app.get('/api/cart', async (_, res) => {
+    const items = await db.collection('cart').find().toArray();
+    res.json(items);
+});
+
+app.post('/api/cart/add', express.json(), async (req, res) => {
+    const nom: string | undefined = req.body?.nom;
+    const quantityRaw = req.body?.quantity;
+    const quantity = Number(quantityRaw) ? Number(quantityRaw) : 1;
+
+    if (!nom || quantity < 1) {
+        return res.status(400).json({ status: false, message: 'Produit ou quantite invalide' });
+    }
+
+    const article = await db.collection('articles').findOne({ nom });
+
+    if (!article) {
+        return res.status(404).json({ status: false, message: 'Produit introuvable' });
+    }
+
+    await db.collection('cart').updateOne(
+        { nom: article['nom'] },
+        {
+            $setOnInsert: {
+                nom: article['nom'],
+                marque: article['marque'],
+                prix: article['prix'],
+            },
+            $inc: { quantity },
+        },
+        { upsert: true },
+    );
+
+    return res.json({ status: true, message: 'Produit ajoute au panier' });
+});
+
+app.delete('/api/cart/delete', express.json(), async (req, res) => {
+    const nom: string | undefined = req.body?.nom;
+
+    if (!nom) {
+        return res.status(400).json({ status: false, message: 'Produit ou quantite invalide' });
+    }
+
+    const article = await db.collection('articles').findOne({ nom });
+
+    if (!article) {
+        return res.status(404).json({ status: false, message: 'Produit introuvable' });
+    }
+
+    await db.collection('cart').deleteOne({ nom });
+
+    return res.json({ status: true, message: 'Produit supprimer du panier' });
 });
 
 app.use((req, res, next) => {

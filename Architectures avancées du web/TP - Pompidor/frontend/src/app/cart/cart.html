@@ -1,3 +1,9 @@
 <h1>Votre panier</h1>
 <ul>
+	@for (item of items(); track item.nom) {
+		<li>
+            {{ item.nom }} | {{ item.marque }} | Quantite : {{ item.quantity }} | Prix unitaire : {{ item.prix }} € | Total : {{ item.quantity * item.prix }} €
+            <button type="button" (click)="deleteFromCart(item)">Supprimer</button>
+        </li>
+	}
 </ul>

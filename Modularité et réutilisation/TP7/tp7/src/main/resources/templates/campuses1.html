@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Les Campus</title>
+<meta charset="UTF-8">
+</head>
+<body>
+    <h1>Liste des Campus</h1>
+   <table border="1">
+        <thead>
+            <tr>
+				<th>Nom du Campus</th>
+				<th>Ville</th>
+				<th>Bâtiments</th>
+				<th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Boucle sur la liste des salles -->
+			<tr th:each="campus : ${campuses}">
+			    <td th:text="${campus.nomC}"></td>             
+			    <td th:text="${campus.ville}"></td>      
+			    <td> <p th:each="b:${campus.getBatiments()}" th:text="${b.getCodeB()}"></p></td>            
+				<td>
+		<form th:action="@{/campus/delete/{nomC}(nomC=${campus.nomC})}" method="post">  
+	  	  <input type="hidden" name="_method" value="delete"/>   
+	   	 <button type="submit">Supprimer</button>
+		</form>
+				</td>
+			</tr>
+        </tbody>       
+    </table>
+    <br><br>
+    
+ <form th:action="@{/campus/newCampus}" th:method="get"> 
+            <button type="submit">Ajouter un Campus</button>
+        </form>   
+    
+</body>
+</html>
